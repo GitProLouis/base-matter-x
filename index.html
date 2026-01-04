@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base Matter | Refine the Raw</title>
+    <meta name="description" content="Human Asset Management. High-performance protocols for the modern industrialist.">
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Tailwind for Layout Utilities -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        :root {
+            --bg-root: #FFFFFF;
+            --surface-lab: #F8FAFC;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --accent-blue: #2563EB;
+            --border-industrial: #E2E8F0;
+        }
+
+        body {
+            background-color: var(--bg-root);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Industrial Navigation */
+        .nav-link {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--accent-blue); }
+
+        /* View Management */
+        .page-view { display: none; animation: fadeIn 0.5s ease; }
+        .page-view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Hero Styling */
+        .hero-title {
+            font-weight: 800;
+            font-size: clamp(3rem, 10vw, 6rem);
+            line-height: 0.95;
+            letter-spacing: -0.05em;
+        }
+
+        /* Protocol/Product Card */
+        .protocol-card {
+            border: 1px solid var(--border-industrial);
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 520px;
+        }
+
+        .protocol-card:hover {
+            border-color: var(--text-main);
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.1);
+        }
+
+        .protocol-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--accent-blue);
+            background: #EFF6FF;
+            padding: 4px 10px;
+            border-radius: 2px;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-bottom: 24px;
+        }
+
+        .spec-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--accent-blue);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .protocol-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-top: auto;
+            padding-top: 32px;
+            border-top: 1px solid var(--border-industrial);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Blueprint Lines */
+        .blueprint-bg {
+            background-image: 
+                linear-gradient(var(--border-industrial) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border-industrial) 1px, transparent 1px);
+            background-size: 100px 100px;
+            opacity: 0.3;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Custom Button */
+        .btn-industrial {
+            background: var(--text-main);
+            color: white;
+            padding: 18px 32px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .btn-industrial:hover {
+            background: var(--accent-blue);
+            transform: scale(1.02);
+        }
+
+        /* Footer Marquee */
+        .marquee {
+            overflow: hidden;
+            white-space: nowrap;
+            background: var(--text-main);
+            color: white;
+            padding: 15px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .marquee-inner {
+            display: inline-block;
+            animation: scroll 40s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+    </style>
+</head>
+<body class="bg-white">
+
+    <!-- Blueprint Grid Background -->
+    <div class="blueprint-bg"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a onclick="showView('home')" class="text-xl font-black tracking-tighter cursor-pointer">BASE MATTER.</a>
+                <div class="hidden md:flex items-center gap-6">
+                    <a onclick="showView('home')" class="nav-link" id="nav-home">Home</a>
+                    <a href="#protocols" onclick="showView('home')" class="nav-link" id="nav-protocols">Protocols</a>
+                    <a onclick="showView('supplements')" class="nav-link" id="nav-supplements">Supplements</a>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <span class="mono text-[10px] text-slate-400 hidden sm:block">SYSTEM STATUS: OPTIMIZED</span>
+                <button class="btn-industrial py-2 px-6 text-xs" onclick="window.open('https://calendly.com/louis-017v/30min', '_blank')">Consult Lab</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32">
+        
+        <!-- HOME VIEW (Full Reversion to 15:00 Architecture) -->
+        <div id="home" class="page-view active">
+            <!-- Hero Section -->
+            <section class="max-w-7xl mx-auto px-6 py-20 lg:py-32">
+                <div class="grid lg:grid-cols-2 gap-12 items-end">
+                    <div>
+                        <span class="mono text-blue-600 font-bold text-xs tracking-widest block mb-6">BETA COLLECTION // 01</span>
+                        <h1 class="hero-title mb-10">Refine<br>the Raw.</h1>
+                        <p class="text-xl text-slate-500 max-w-lg font-light leading-relaxed">
+                            No fluff. No influencers. Just engineering. Base Matter is the operating system for the high-performance principal. Optimize your hardware before you scale your software.
+                        </p>
+                    </div>
+                    <div class="flex flex-col items-start lg:items-end">
+                        <div class="w-full lg:w-96 p-8 border border-slate-200 bg-slate-50">
+                            <span class="mono text-[10px] text-slate-400 block mb-4 uppercase">Asset Status Audit</span>
+                            <div class="space-y-4">
+                                <div class="flex justify-between border-b border-slate-200 pb-2">
+                                    <span class="text-sm font-semibold">Chassis Integrity</span>
+                                    <span class="mono text-sm text-blue-600">Optimal</span>
+                                </div>
+                                <div class="flex justify-between border-b border-slate-200 pb-2">
+                                    <span class="text-sm font-semibold">Cognitive Load</span>
+                                    <span class="mono text-sm text-slate-400">Stable</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm font-semibold">Recovery Equity</span>
+                                    <span class="mono text-sm text-blue-600">92%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deployment Protocols (Original Flow) -->
+            <section id="protocols" class="max-w-7xl mx-auto px-6 py-20">
+                <div class="mb-16">
+                    <h2 class="mono text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Deployment Protocols</h2>
+                    <div class="h-1 w-20 bg-blue-600"></div>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- THE CHASSIS -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Ref. 001 // Strength</span>
+                            <h3 class="text-3xl font-bold mb-6 tracking-tight">THE CHASSIS</h3>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                A 12-week structural engineering program for the male physique. Focus on posterior chain, grip strength, and the "Supafit 5" mobility drill.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$25.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                        </div>
+                    </div>
+
+                    <!-- FUEL ARCHITECTURE -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Ref. 002 // Nutrition</span>
+                            <h3 class="text-3xl font-bold mb-6 tracking-tight">FUEL ARCHITECTURE</h3>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                Executive nutrition strategy. Bio-availability and energy density for high-stakes environments. Includes the "Deal-Flow" lunch.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$19.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                        </div>
+                    </div>
+
+                    <!-- THE O.S. -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Ref. 003 // Cognitive</span>
+                            <h3 class="text-3xl font-bold mb-6 tracking-tight">THE O.S.</h3>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                The Operating System for focus. N.L. Morake's exact daily biohacking stack. Sleep equity and morning audits.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$30.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                        </div>
+                    </div>
+
+                    <!-- THE DIPLOMAT -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Ref. 004 // Travel</span>
+                            <h3 class="text-3xl font-bold mb-6 tracking-tight">THE DIPLOMAT</h3>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                Travel and hotel fitness algorithms. Peak conditioning with zero equipment. Beat jet lag in any global node.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$14.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                        </div>
+                    </div>
+
+                    <!-- THE FASTING LEDGER -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Ref. 005 // Discipline</span>
+                            <h3 class="text-3xl font-bold mb-6 tracking-tight">THE FASTING LEDGER</h3>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                Asset protection for your cells. Bridging the gap between scientific autophagy and the discipline of the Sunnah.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$11.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                        </div>
+                    </div>
+
+                    <!-- BESPOKE AUDIT -->
+                    <div class="protocol-card bg-slate-900 border-none">
+                        <div class="text-white">
+                            <span class="mono text-blue-400 text-[10px] tracking-widest uppercase block mb-6">Custom Mandates</span>
+                            <h3 class="text-3xl font-bold mb-6 tracking-tight">BESPOKE AUDIT</h3>
+                            <p class="opacity-60 mb-8 leading-relaxed">
+                                Private biological stress-testing and customized longevity frameworks for family offices.
+                            </p>
+                        </div>
+                        <button class="btn-industrial w-full justify-center" onclick="window.open('https://calendly.com/louis-017v/30min', '_blank')">Contact Lab</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Philosophy Section -->
+            <section id="philosophy" class="bg-slate-50 py-32 border-y border-slate-100">
+                <div class="max-w-5xl mx-auto px-6 text-center">
+                    <span class="mono text-blue-600 text-xs font-bold uppercase tracking-widest mb-10 block">The Base Matter Manifesto</span>
+                    <h2 class="text-4xl md:text-5xl font-extrabold mb-12 tracking-tight">Your Hardware is the Asset.<br>Everything else is noise.</h2>
+                    <div class="grid md:grid-cols-3 gap-12 text-left mt-20">
+                        <div>
+                            <h4 class="font-bold mb-4 flex items-center gap-3"><i class="fa-solid fa-1 text-blue-600"></i> No Influencers</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">We don't sell aesthetics. We sell functional reliability for the modern world's demands.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-4 flex items-center gap-3"><i class="fa-solid fa-2 text-blue-600"></i> Data Over Hype</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Every protocol is based on the physiological demands of a high-stress, high-stakes life.</p>
+                        </div>
+                        <div>
+                            <h4 class="font-bold mb-4 flex items-center gap-3"><i class="fa-solid fa-3 text-blue-600"></i> Total Discipline</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Sovereignty is not given; it is earned through consistent adherence to the protocol.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- SUPPLEMENTS (MATERIAL INPUTS) VIEW (Preserved from latest version) -->
+        <div id="supplements" class="page-view">
+            <section class="max-w-7xl mx-auto px-6 py-20">
+                <div class="mb-16">
+                    <h2 class="mono text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Material Inputs</h2>
+                    <h3 class="text-4xl font-extrabold tracking-tight">Biological Hardware Optimization</h3>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- ATP-01 -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: ATP-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">MICRONIZED CREATINE</h3>
+                            <span class="spec-label">99.9% HPLC Purified // 5g Serving</span>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                Accelerates ATP recycling for explosive power and cognitive recall. A vital hardware input for cellular energy management.
+                            </p>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3 text-xs mono text-slate-900 font-bold border-l-2 border-blue-600 pl-4 uppercase">Intra-Cellular Hydration</div>
+                                <div class="flex items-center gap-3 text-xs mono text-slate-900 font-bold border-l-2 border-blue-600 pl-4 uppercase">Neural Signal Stability</div>
+                            </div>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$35.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                        </div>
+                    </div>
+
+                    <!-- PRO-01 -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: PRO-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">WHEY ISOLATE</h3>
+                            <span class="spec-label">Ultra-Filtered // Zero Lactose</span>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                Provides essential nitrogen balance for immediate tissue repair. Pure amino acid delivery with zero inflammatory bloat.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$55.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                        </div>
+                    </div>
+
+                    <!-- HYD-01 -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: HYD-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">ELECTROLYTE MATRIX</h3>
+                            <span class="spec-label">Precision Na/K/Mg Ratio</span>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                Stabilizes neural conduction and cellular hydration. Essential for maintaining electrical signaling under high cognitive load.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$29.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                        </div>
+                    </div>
+
+                    <!-- CELL-01 -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: CELL-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">NAD+ PRECURSOR</h3>
+                            <span class="spec-label">Mitochondrial Hardware Upgrade</span>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                Catalyzes cellular DNA repair and sirtuin activation. Engineered to expand the productive lifespan of the Principal.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$75.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                        </div>
+                    </div>
+
+                    <!-- NEURO-01 -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: NEURO-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">MUSHROOM BLEND</h3>
+                            <span class="spec-label">8-Stage Extract // Dual-Solvent</span>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                A synergistic fungal stack of Lion's Mane and Cordyceps. Optimizes synaptic plasticity and cognitive endurance during deep work.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$42.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                        </div>
+                    </div>
+
+                    <!-- COG-01 -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: COG-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">MYCELIUM COFFEE</h3>
+                            <span class="spec-label">Arabica + Reishi Infusion</span>
+                            <p class="text-slate-500 mb-8 leading-relaxed">
+                                Cognitive stimulus without the adrenal friction. Reishi extract buffers the jitter, allowing for prolonged synaptic clarity.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$32.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <footer class="pt-20">
+        <div class="marquee">
+            <div class="marquee-inner">
+                REFINE THE RAW • NO FLUFF • HUMAN ASSET ENGINEERING • MATERIAL INPUTS • REFINE THE RAW • NO FLUFF • HUMAN ASSET ENGINEERING • MATERIAL INPUTS • REFINE THE RAW • NO FLUFF • HUMAN ASSET ENGINEERING • MATERIAL INPUTS •
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-6 py-12 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-xl font-black tracking-tighter">BASE MATTER.</div>
+            <div class="flex gap-8">
+                <a href="#" class="mono text-[10px] text-slate-400 hover:text-blue-600 transition-colors">Quality Control</a>
+                <a href="#" class="mono text-[10px] text-slate-400 hover:text-blue-600 transition-colors">Privacy Protocol</a>
+                <a href="#" class="mono text-[10px] text-slate-400 hover:text-blue-600 transition-colors">Terms of Mandate</a>
+            </div>
+            <div class="mono text-[10px] text-slate-300">© 2024 BASE MATTER // LAB_V1.1</div>
+        </div>
+    </footer>
+
+    <script>
+        function showView(viewId) {
+            // Manage Visibility
+            document.querySelectorAll('.page-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            const targetView = document.getElementById(viewId);
+            if (targetView) targetView.classList.add('active');
+
+            // Manage Nav Styles
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            const activeNav = document.getElementById('nav-' + viewId);
+            if (activeNav) activeNav.classList.add('active');
+
+            window.scrollTo(0, 0);
+        }
+    </script>
+
+</body>
+</html>
