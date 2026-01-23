@@ -173,6 +173,25 @@
             100% { transform: translateX(-50%); }
         }
 
+        /* Cart Bubble Styles */
+        .cart-wrapper { position: relative; display: inline-flex; align-items: center; }
+        .cart-bubble {
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            background-color: var(--accent-blue);
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 2px;
+            min-width: 16px;
+            text-align: center;
+            display: none;
+        }
+        .cart-bubble.active { display: block; }
+
     </style>
 </head>
 <body class="bg-white">
@@ -193,6 +212,14 @@
             </div>
             <div class="flex items-center gap-6">
                 <span class="mono text-[10px] text-slate-400 hidden sm:block">SYSTEM STATUS: OPTIMIZED</span>
+                
+                <!-- Updated Cart Trigger -->
+                <div class="cart-wrapper">
+                    <a href="#" id="global-checkout-btn" class="nav-link" style="color: var(--text-main);">
+                        INVENTORY <span id="cart-count" class="cart-bubble">0</span>
+                    </a>
+                </div>
+
                 <button class="btn-industrial py-2 px-6 text-xs" onclick="window.open('https://calendly.com/louis-017v/30min', '_blank')">Consult Lab</button>
             </div>
         </div>
@@ -200,7 +227,7 @@
 
     <main class="pt-32">
         
-        <!-- HOME VIEW (Full Reversion to 15:00 Architecture) -->
+        <!-- HOME VIEW -->
         <div id="home" class="page-view active">
             <!-- Hero Section -->
             <section class="max-w-7xl mx-auto px-6 py-20 lg:py-32">
@@ -234,7 +261,7 @@
                 </div>
             </section>
 
-            <!-- Deployment Protocols (Original Flow) -->
+            <!-- Deployment Protocols -->
             <section id="protocols" class="max-w-7xl mx-auto px-6 py-20">
                 <div class="mb-16">
                     <h2 class="mono text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Deployment Protocols</h2>
@@ -253,7 +280,8 @@
                         </div>
                         <div class="protocol-price">
                             <span>$25.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                            <!-- Placeholder ID for digital product -->
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="DIGITAL_CHASSIS_ID">Initiate</button>
                         </div>
                     </div>
 
@@ -268,7 +296,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$19.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="DIGITAL_FUEL_ID">Initiate</button>
                         </div>
                     </div>
 
@@ -283,7 +311,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$30.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="DIGITAL_OS_ID">Initiate</button>
                         </div>
                     </div>
 
@@ -298,7 +326,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$14.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="DIGITAL_DIP_ID">Initiate</button>
                         </div>
                     </div>
 
@@ -313,7 +341,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$11.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Initiate</button>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="DIGITAL_FAST_ID">Initiate</button>
                         </div>
                     </div>
 
@@ -354,7 +382,7 @@
             </section>
         </div>
 
-        <!-- SUPPLEMENTS (MATERIAL INPUTS) VIEW (Preserved from latest version) -->
+        <!-- SUPPLEMENTS (MATERIAL INPUTS) VIEW -->
         <div id="supplements" class="page-view">
             <section class="max-w-7xl mx-auto px-6 py-20">
                 <div class="mb-16">
@@ -363,18 +391,19 @@
                 </div>
 
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- ATP-01 -->
+                    
+                    <!-- ATP-01 CREATINE (UPDATED ID) -->
                     <div class="protocol-card">
                         <div>
                             <span class="protocol-badge">Input Type: ATP-01</span>
                             <h3 class="text-3xl font-bold mb-2 tracking-tight">MICRONIZED CREATINE</h3>
-                            <span class="spec-label">99.9% HPLC Purified // 5g Serving</span>
-                            <p class="text-slate-500 mb-8 leading-relaxed">
-                                Accelerates ATP recycling for explosive power and cognitive recall. A vital hardware input for cellular energy management.
+                            <span class="spec-label">99.9% HPLC Purified // 250g Unit</span>
+                            <p class="text-slate-500 mt-6 mb-8 leading-relaxed">
+                                The body’s natural production of creatine is insufficient for the high-output demands of the industrial principal. ATP-01 bridges this deficit, providing hardware inputs to support muscle protein synthesis and anaerobic power.
                             </p>
                             <div class="space-y-4">
-                                <div class="flex items-center gap-3 text-xs mono text-slate-900 font-bold border-l-2 border-blue-600 pl-4 uppercase">Intra-Cellular Hydration</div>
-                                <div class="flex items-center gap-3 text-xs mono text-slate-900 font-bold border-l-2 border-blue-600 pl-4 uppercase">Neural Signal Stability</div>
+                                <div class="text-xs font-semibold uppercase tracking-wider text-slate-900 border-l-2 border-blue-600 pl-4">High-Purity ATP Recycling</div>
+                                <div class="text-xs font-semibold uppercase tracking-wider text-slate-900 border-l-2 border-blue-600 pl-4">Hardware Synthesis Support</div>
                             </div>
                         </div>
                         <div class="protocol-price">
@@ -383,85 +412,122 @@
                         </div>
                     </div>
 
-                    <!-- PRO-01 -->
+                    <!-- REC-01 GLUTAMINE -->
                     <div class="protocol-card">
                         <div>
-                            <span class="protocol-badge">Input Type: PRO-01</span>
-                            <h3 class="text-3xl font-bold mb-2 tracking-tight">WHEY ISOLATE</h3>
-                            <span class="spec-label">Ultra-Filtered // Zero Lactose</span>
-                            <p class="text-slate-500 mb-8 leading-relaxed">
-                                Provides essential nitrogen balance for immediate tissue repair. Pure amino acid delivery with zero inflammatory bloat.
+                            <span class="protocol-badge">Input Type: REC-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">L-GLUTAMINE</h3>
+                            <span class="spec-label">Systemic Recovery // 500g Unit</span>
+                            <p class="text-slate-500 mt-6 mb-8 leading-relaxed">
+                                Intense physical stress and cognitive load deplete your system's glutamine reserves. REC-01 is a pure amino acid input designed to stabilize nitrogen balance and support the integrity of the intestinal barrier.
                             </p>
                         </div>
                         <div class="protocol-price">
-                            <span>$55.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                            <span>$45.00</span>
+                            <!-- Replace ID once known -->
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43963412119594">Acquire</button>
                         </div>
                     </div>
 
-                    <!-- HYD-01 -->
+                    <!-- SYN-01 BCAA (UPDATED ID) -->
                     <div class="protocol-card">
                         <div>
-                            <span class="protocol-badge">Input Type: HYD-01</span>
-                            <h3 class="text-3xl font-bold mb-2 tracking-tight">ELECTROLYTE MATRIX</h3>
-                            <span class="spec-label">Precision Na/K/Mg Ratio</span>
-                            <p class="text-slate-500 mb-8 leading-relaxed">
-                                Stabilizes neural conduction and cellular hydration. Essential for maintaining electrical signaling under high cognitive load.
+                            <span class="protocol-badge">Input Type: SYN-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">BCAA 2:1:1</h3>
+                            <span class="spec-label">Anabolic Signaling // 292g Unit</span>
+                            <p class="text-slate-500 mt-6 mb-8 leading-relaxed">
+                                Engineered with a precise 2:1:1 ratio, SYN-01 acts as a metabolic bypass, reducing the rate of perceived exertion and biological fatigue. Tactical choice for maintaining structural mass under deficit.
                             </p>
                         </div>
                         <div class="protocol-price">
-                            <span>$29.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                            <span>$39.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="44001879523370">Acquire</button>
                         </div>
                     </div>
 
-                    <!-- CELL-01 -->
-                    <div class="protocol-card">
-                        <div>
-                            <span class="protocol-badge">Input Type: CELL-01</span>
-                            <h3 class="text-3xl font-bold mb-2 tracking-tight">NAD+ PRECURSOR</h3>
-                            <span class="spec-label">Mitochondrial Hardware Upgrade</span>
-                            <p class="text-slate-500 mb-8 leading-relaxed">
-                                Catalyzes cellular DNA repair and sirtuin activation. Engineered to expand the productive lifespan of the Principal.
-                            </p>
-                        </div>
-                        <div class="protocol-price">
-                            <span>$75.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
-                        </div>
-                    </div>
-
-                    <!-- NEURO-01 -->
-                    <div class="protocol-card">
-                        <div>
-                            <span class="protocol-badge">Input Type: NEURO-01</span>
-                            <h3 class="text-3xl font-bold mb-2 tracking-tight">MUSHROOM BLEND</h3>
-                            <span class="spec-label">8-Stage Extract // Dual-Solvent</span>
-                            <p class="text-slate-500 mb-8 leading-relaxed">
-                                A synergistic fungal stack of Lion's Mane and Cordyceps. Optimizes synaptic plasticity and cognitive endurance during deep work.
-                            </p>
-                        </div>
-                        <div class="protocol-price">
-                            <span>$42.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
-                        </div>
-                    </div>
-
-                    <!-- COG-01 -->
+                    <!-- COG-01 COFFEE -->
                     <div class="protocol-card">
                         <div>
                             <span class="protocol-badge">Input Type: COG-01</span>
                             <h3 class="text-3xl font-bold mb-2 tracking-tight">MYCELIUM COFFEE</h3>
-                            <span class="spec-label">Arabica + Reishi Infusion</span>
-                            <p class="text-slate-500 mb-8 leading-relaxed">
-                                Cognitive stimulus without the adrenal friction. Reishi extract buffers the jitter, allowing for prolonged synaptic clarity.
+                            <span class="spec-label">Arabica + Mushroom Extracts // 54g Unit</span>
+                            <p class="text-slate-500 mt-6 mb-8 leading-relaxed">
+                                Fusing single-origin Arabica with Lion’s Mane and Chaga. Provides cognitive clarity and energy without the tremors or adrenal friction of standard stimulants. A refined ritual for focus.
                             </p>
                         </div>
                         <div class="protocol-price">
                             <span>$32.00</span>
-                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors">Acquire</button>
+                             <!-- Replace ID once known -->
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43963412119594">Acquire</button>
                         </div>
                     </div>
+
+                    <!-- NEURO-01 MUSHROOM COMPLEX -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: NEURO-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">MUSHROOM COMPLEX</h3>
+                            <span class="spec-label">10-Mushroom Stack // 60 Capsules</span>
+                            <p class="text-slate-500 mt-6 mb-8 leading-relaxed">
+                                A high-density fungal stack enhancing neural plasticity and immune resilience. Modulates the stress response to ensure the hardware remains sharp during deep-work cycles.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$42.00</span>
+                             <!-- Replace ID once known -->
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43963412119594">Acquire</button>
+                        </div>
+                    </div>
+
+                    <!-- PRO-01 WHEY ISOLATE -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: PRO-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">WHEY ISOLATE</h3>
+                            <span class="spec-label">Ultra-Filtered // 908g Unit</span>
+                            <p class="text-slate-500 mt-6 mb-8 leading-relaxed">
+                                The gold standard for rapid-entry biological repair. Cold-processed to preserve fragile immunoglobulin fractions, ensuring immediate muscle-tissue saturation with zero lactose drag.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$55.00</span>
+                             <!-- Replace ID once known -->
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43963412119594">Acquire</button>
+                        </div>
+                    </div>
+
+                     <!-- HEME-01 IRON STRIPS (UPDATED ID) -->
+                     <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: HEME-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">IRON ORAL STRIPS</h3>
+                            <span class="spec-label">Oxygen Transport // 30 Strips</span>
+                            <p class="text-slate-500 mt-6 mb-8 leading-relaxed">
+                                A rapid-dissolve hardware input designed to support healthy red blood cell production and sustain core energy levels. Combining Ferric Saccharate with Folate for water-free delivery.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$32.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43963824865322">Acquire</button>
+                        </div>
+                    </div>
+
+                    <!-- VIGOR-01 ENERGY STRIPS (UPDATED ID) -->
+                    <div class="protocol-card">
+                        <div>
+                            <span class="protocol-badge">Input Type: VIGOR-01</span>
+                            <h3 class="text-3xl font-bold mb-2 tracking-tight">ENERGY ORAL STRIPS</h3>
+                            <span class="spec-label">Mobilization Matrix // 30 Strips</span>
+                            <p class="text-slate-500 mt-6 mb-8 leading-relaxed">
+                                A precisely calibrated mobilization matrix utilizing a synergistic blend of Green Tea Caffeine and L-Theanine for sustained alertness and mental clarity without the crash.
+                            </p>
+                        </div>
+                        <div class="protocol-price">
+                            <span>$32.00</span>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43969260617770">Acquire</button>
+                        </div>
+                    </div>
+
                 </div>
             </section>
         </div>
@@ -485,6 +551,7 @@
         </div>
     </footer>
 
+    <!-- VIEW MANAGEMENT SCRIPT -->
     <script>
         function showView(viewId) {
             // Manage Visibility
@@ -504,75 +571,79 @@
             window.scrollTo(0, 0);
         }
     </script>
-<script>
-  /**
-   * BASE MATTER // SOVEREIGN ACCUMULATION PROTOCOL
-   * Manages local cart state and constructs Shopify Permalink
-   */
-   
-  // 1. Initialize Cart from Local Storage
-  let cartState = JSON.parse(localStorage.getItem('bm_cart_state')) || {};
 
-  function updateCartUI() {
-    // Calculate total items
-    const totalItems = Object.values(cartState).reduce((a, b) => a + b, 0);
-    
-    // Update Bubble
-    const bubble = document.getElementById('cart-count');
-    if (totalItems > 0) {
-      bubble.textContent = totalItems;
-      bubble.classList.add('active');
-    } else {
-      bubble.classList.remove('active');
-    }
-  }
+    <!-- SOVEREIGN ACCUMULATION PROTOCOL (CART ENGINE) -->
+    <script>
+        /**
+         * BASE MATTER // SOVEREIGN ACCUMULATION PROTOCOL
+         * Manages local cart state and constructs Shopify Permalink
+         */
+        
+        let cartState = JSON.parse(localStorage.getItem('bm_cart_state')) || {};
 
-  // 2. The "Silent Add" Listener
-  document.querySelectorAll('.btn').forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault(); // Stop page jump
-      
-      const variantId = this.getAttribute('data-variant-id');
-      
-      if(variantId) {
-        // Add to local state
-        cartState[variantId] = (cartState[variantId] || 0) + 1;
-        
-        // Save to browser memory
-        localStorage.setItem('bm_cart_state', JSON.stringify(cartState));
-        
-        // Update UI
+        function updateCartUI() {
+            const totalItems = Object.values(cartState).reduce((a, b) => a + b, 0);
+            const bubble = document.getElementById('cart-count');
+            
+            if (totalItems > 0) {
+                bubble.textContent = totalItems;
+                bubble.classList.add('active');
+            } else {
+                bubble.classList.remove('active');
+            }
+        }
+
+        // Silent Add Listener
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); 
+                
+                const variantId = this.getAttribute('data-variant-id');
+                
+                // Only process if it's a real variant ID (ignore placeholders)
+                if(variantId && variantId !== "DIGITAL_CHASSIS_ID" && variantId !== "DIGITAL_FUEL_ID") {
+                    // Add to local state
+                    cartState[variantId] = (cartState[variantId] || 0) + 1;
+                    
+                    // Save to browser memory
+                    localStorage.setItem('bm_cart_state', JSON.stringify(cartState));
+                    
+                    // Update UI
+                    updateCartUI();
+                    
+                    // Visual Feedback
+                    const originalText = this.innerText;
+                    this.innerText = "ACCUMULATED";
+                    this.classList.add('text-green-600');
+                    setTimeout(() => { 
+                        this.innerText = originalText; 
+                        this.classList.remove('text-green-600');
+                    }, 1000);
+                } else {
+                    console.log("Placeholder ID clicked or ID missing");
+                }
+            });
+        });
+
+        // Global Checkout Trigger
+        document.getElementById('global-checkout-btn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const variants = Object.entries(cartState)
+                .map(([id, qty]) => `${id}:${qty}`)
+                .join(',');
+
+            if (variants.length > 0) {
+                // Redirect to Shopify Checkout with all items pre-loaded
+                window.location.href = `https://base-matter-2.myshopify.com/cart/${variants}`;
+            } else {
+                alert("INVENTORY EMPTY. PLEASE ACQUIRE INPUTS.");
+            }
+        });
+
+        // Load state on page load
         updateCartUI();
-        
-        // Visual Feedback (Flash button text)
-        const originalText = this.innerText;
-        this.innerText = "ACCUMULATED";
-        setTimeout(() => { this.innerText = originalText; }, 1000);
-      }
-    });
-  });
+    </script>
 
-  // 3. The Global Checkout Trigger
-  document.getElementById('global-checkout-btn').addEventListener('click', function(e) {
-    e.preventDefault();
-    
-    // Build Shopify Permalink: /cart/ID:Qty,ID:Qty
-    const variants = Object.entries(cartState)
-      .map(([id, qty]) => `${id}:${qty}`)
-      .join(',');
-
-    if (variants.length > 0) {
-      window.location.href = `https://base-matter.myshopify.com/cart/${variants}`;
-    } else {
-      alert("INVENTORY EMPTY. PLEASE ACQUIRE INPUTS.");
-    }
-  });
-
-  // Load state on page load
-  updateCartUI();
-</script>
 </body>
-
 </html>
-
-
