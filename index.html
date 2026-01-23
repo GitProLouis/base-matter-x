@@ -172,7 +172,7 @@
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
-
+        
         /* Cart Bubble Styles */
         .cart-wrapper { position: relative; display: inline-flex; align-items: center; }
         .cart-bubble {
@@ -358,28 +358,6 @@
                     </div>
                 </div>
             </section>
-
-            <!-- Philosophy Section -->
-            <section id="philosophy" class="bg-slate-50 py-32 border-y border-slate-100">
-                <div class="max-w-5xl mx-auto px-6 text-center">
-                    <span class="mono text-blue-600 text-xs font-bold uppercase tracking-widest mb-10 block">The Base Matter Manifesto</span>
-                    <h2 class="text-4xl md:text-5xl font-extrabold mb-12 tracking-tight">Your Hardware is the Asset.<br>Everything else is noise.</h2>
-                    <div class="grid md:grid-cols-3 gap-12 text-left mt-20">
-                        <div>
-                            <h4 class="font-bold mb-4 flex items-center gap-3"><i class="fa-solid fa-1 text-blue-600"></i> No Influencers</h4>
-                            <p class="text-sm text-slate-500 leading-relaxed">We don't sell aesthetics. We sell functional reliability for the modern world's demands.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-4 flex items-center gap-3"><i class="fa-solid fa-2 text-blue-600"></i> Data Over Hype</h4>
-                            <p class="text-sm text-slate-500 leading-relaxed">Every protocol is based on the physiological demands of a high-stress, high-stakes life.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold mb-4 flex items-center gap-3"><i class="fa-solid fa-3 text-blue-600"></i> Total Discipline</h4>
-                            <p class="text-sm text-slate-500 leading-relaxed">Sovereignty is not given; it is earned through consistent adherence to the protocol.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
 
         <!-- SUPPLEMENTS (MATERIAL INPUTS) VIEW -->
@@ -408,6 +386,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$35.00</span>
+                            <!-- Variant ID: 43963412119594 -->
                             <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43963412119594">Acquire</button>
                         </div>
                     </div>
@@ -441,6 +420,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$39.00</span>
+                            <!-- Variant ID: 44001879523370 -->
                             <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="44001879523370">Acquire</button>
                         </div>
                     </div>
@@ -508,6 +488,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$32.00</span>
+                             <!-- Variant ID: 43963824865322 -->
                             <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43963824865322">Acquire</button>
                         </div>
                     </div>
@@ -524,6 +505,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$32.00</span>
+                             <!-- Variant ID: 43969260617770 -->
                             <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43969260617770">Acquire</button>
                         </div>
                     </div>
@@ -576,7 +558,7 @@
     <script>
         /**
          * BASE MATTER // SOVEREIGN ACCUMULATION PROTOCOL
-         * Manages local cart state and constructs Shopify Permalink
+         * Manages local cart state and constructs Shopify Permalink with Return URL
          */
         
         let cartState = JSON.parse(localStorage.getItem('bm_cart_state')) || {};
@@ -601,7 +583,7 @@
                 const variantId = this.getAttribute('data-variant-id');
                 
                 // Only process if it's a real variant ID (ignore placeholders)
-                if(variantId && variantId !== "DIGITAL_CHASSIS_ID" && variantId !== "DIGITAL_FUEL_ID") {
+                if(variantId && variantId !== "DIGITAL_CHASSIS_ID" && variantId !== "DIGITAL_FUEL_ID" && variantId !== "DIGITAL_OS_ID" && variantId !== "DIGITAL_DIP_ID" && variantId !== "DIGITAL_FAST_ID") {
                     // Add to local state
                     cartState[variantId] = (cartState[variantId] || 0) + 1;
                     
@@ -629,13 +611,17 @@
         document.getElementById('global-checkout-btn').addEventListener('click', function(e) {
             e.preventDefault();
             
+            // Generate variant string
             const variants = Object.entries(cartState)
                 .map(([id, qty]) => `${id}:${qty}`)
                 .join(',');
 
+            // Get current page URL (to return to)
+            const returnUrl = encodeURIComponent(window.location.href);
+
             if (variants.length > 0) {
-                // Redirect to Shopify Checkout with all items pre-loaded
-                window.location.href = `https://base-matter-2.myshopify.com/cart/${variants}`;
+                // Redirect to Shopify Checkout with all items pre-loaded AND return_to parameter
+                window.location.href = `https://base-matter-2.myshopify.com/cart/${variants}?return_to=${returnUrl}`;
             } else {
                 alert("INVENTORY EMPTY. PLEASE ACQUIRE INPUTS.");
             }
