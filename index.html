@@ -298,25 +298,45 @@
     <!-- Navigation -->
     <nav class="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo & Desktop Links -->
             <div class="flex items-center gap-8">
                 <a onclick="showView('home')" class="text-xl font-black tracking-tighter cursor-pointer">BASE MATTER.</a>
+                <!-- Desktop Navigation (Hidden on Mobile) -->
                 <div class="hidden md:flex items-center gap-6">
                     <a onclick="showView('home')" class="nav-link" id="nav-home">Home</a>
                     <a href="#protocols" onclick="showView('home')" class="nav-link" id="nav-protocols">Protocols</a>
                     <a onclick="showView('supplements')" class="nav-link" id="nav-supplements">Supplements</a>
                 </div>
             </div>
+
+            <!-- Right Side: Status, Cart, Button, Hamburger -->
             <div class="flex items-center gap-6">
-                <span class="mono text-[10px] text-slate-400 hidden sm:block">SYSTEM STATUS: OPTIMIZED</span>
+                <span class="mono text-[10px] text-slate-400 hidden lg:block">SYSTEM STATUS: OPTIMIZED</span>
                 
-                <!-- Updated Cart Trigger -->
+                <!-- Cart Trigger (Visible on Mobile & Desktop) -->
                 <div class="cart-wrapper">
                     <a href="#" id="cart-trigger-btn" class="nav-link" style="color: var(--text-main);">
                         INVENTORY <span id="cart-count" class="cart-bubble">0</span>
                     </a>
                 </div>
 
-                <button class="btn-industrial py-2 px-6 text-xs" onclick="window.open('https://calendly.com/louis-017v/30min', '_blank')">Consult Lab</button>
+                <!-- Consult Button (Desktop Only) -->
+                <button class="hidden md:block btn-industrial py-2 px-6 text-xs" onclick="window.open('https://calendly.com/louis-017v/30min', '_blank')">Consult Lab</button>
+                
+                <!-- Hamburger Menu Toggle (Mobile Only) -->
+                <button id="mobile-menu-toggle" class="md:hidden text-slate-800 text-xl focus:outline-none p-2">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-100 absolute top-20 left-0 w-full p-6 shadow-xl z-40 transition-all">
+            <div class="flex flex-col gap-6">
+                <a onclick="showView('home'); toggleMobileMenu()" class="nav-link text-sm border-b border-slate-50 pb-2">Home</a>
+                <a href="#protocols" onclick="showView('home'); toggleMobileMenu()" class="nav-link text-sm border-b border-slate-50 pb-2">Protocols</a>
+                <a onclick="showView('supplements'); toggleMobileMenu()" class="nav-link text-sm border-b border-slate-50 pb-2">Supplements</a>
+                <button class="btn-industrial w-full justify-center mt-2" onclick="window.open('https://calendly.com/louis-017v/30min', '_blank')">Consult Lab</button>
             </div>
         </div>
     </nav>
@@ -645,8 +665,35 @@
         </div>
     </div>
 
-    <!-- VIEW MANAGEMENT SCRIPT -->
+    <!-- VIEW MANAGEMENT & MOBILE MENU SCRIPT -->
     <script>
+        // Toggle Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            
+            // Toggle Icon
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
+            }
+        });
+
+        function toggleMobileMenu() {
+            if (!mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.add('hidden');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
+        }
+
         function showView(viewId) {
             // Manage Visibility
             document.querySelectorAll('.page-view').forEach(view => {
