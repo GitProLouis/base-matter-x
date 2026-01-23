@@ -379,7 +379,7 @@
                         </div>
                         <div class="protocol-price">
                             <span>$35.00</span>
-                            <a href="https://base-matter-2.myshopify.com/products/micronized-creatine?variant=43963412119594:1" class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn">Acquire</a>
+                            <button class="text-xs font-bold uppercase tracking-widest hover:text-blue-600 transition-colors btn" data-variant-id="43963412119594">Acquire</button>
                         </div>
                     </div>
 
@@ -504,7 +504,74 @@
             window.scrollTo(0, 0);
         }
     </script>
+<script>
+  /**
+   * BASE MATTER // SOVEREIGN ACCUMULATION PROTOCOL
+   * Manages local cart state and constructs Shopify Permalink
+   */
+   
+  // 1. Initialize Cart from Local Storage
+  let cartState = JSON.parse(localStorage.getItem('bm_cart_state')) || {};
 
+  function updateCartUI() {
+    // Calculate total items
+    const totalItems = Object.values(cartState).reduce((a, b) => a + b, 0);
+    
+    // Update Bubble
+    const bubble = document.getElementById('cart-count');
+    if (totalItems > 0) {
+      bubble.textContent = totalItems;
+      bubble.classList.add('active');
+    } else {
+      bubble.classList.remove('active');
+    }
+  }
+
+  // 2. The "Silent Add" Listener
+  document.querySelectorAll('.btn').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault(); // Stop page jump
+      
+      const variantId = this.getAttribute('data-variant-id');
+      
+      if(variantId) {
+        // Add to local state
+        cartState[variantId] = (cartState[variantId] || 0) + 1;
+        
+        // Save to browser memory
+        localStorage.setItem('bm_cart_state', JSON.stringify(cartState));
+        
+        // Update UI
+        updateCartUI();
+        
+        // Visual Feedback (Flash button text)
+        const originalText = this.innerText;
+        this.innerText = "ACCUMULATED";
+        setTimeout(() => { this.innerText = originalText; }, 1000);
+      }
+    });
+  });
+
+  // 3. The Global Checkout Trigger
+  document.getElementById('global-checkout-btn').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Build Shopify Permalink: /cart/ID:Qty,ID:Qty
+    const variants = Object.entries(cartState)
+      .map(([id, qty]) => `${id}:${qty}`)
+      .join(',');
+
+    if (variants.length > 0) {
+      window.location.href = `https://base-matter.myshopify.com/cart/${variants}`;
+    } else {
+      alert("INVENTORY EMPTY. PLEASE ACQUIRE INPUTS.");
+    }
+  });
+
+  // Load state on page load
+  updateCartUI();
+</script>
 </body>
 
 </html>
+
